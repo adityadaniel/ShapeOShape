@@ -49,7 +49,7 @@ class FirstStageViewController: UIViewController {
     }
     
     var timer: Timer?
-    var gameTime = 10
+    var gameTime = 7
     var timerIsRunning = false
     var score = 0
     
@@ -160,6 +160,25 @@ class FirstStageViewController: UIViewController {
         
     }
     
+    func resetScreen() {
+        let colorArray = generateRandomColors()
+        let shapeArray = generateShapes()
+        let colorArrayShuffled = colorArray.shuffled()
+        
+        for (index, outletView) in outletsArray.enumerated() {
+            outletView.backgroundColor = colorArray[index]
+        }
+        
+        for (index, shapeImageView) in shapesViewArray.enumerated() {
+            shapeImageView.image = UIImage(named: shapeArray[index])
+            shapeImageView.tintColor = colorArrayShuffled[index]
+            correctColorSequences.append(colorArrayShuffled[index])
+        }
+        
+        gameTime += 5
+        updateProgressBar()
+    }
+    
     func evaluate() {
         for (index, _) in colorTapped.enumerated() {
             if colorTapped[index] == correctColorSequences[index] {
@@ -171,16 +190,20 @@ class FirstStageViewController: UIViewController {
         
         let correctAnswerCount = correctAnswer.filter{ $0 == true}.count
         if correctAnswerCount == 5 {
-            
             correctAnswer = []
             colorTapped = []
-            print(correctAnswerCount)
+            score += 5
             print("Success")
+            resetScreen()
         } else {
             correctAnswer = []
             colorTapped = []
-            print(correctAnswerCount)
-            print("Failed")
+            let alert = UIAlertController(title: "😎", message: "", preferredStyle: .alert)
+            let action = UIAlertAction(title: "👍🏼", style: .default) { _ in
+                self.resetScreen()
+            }
+            alert.addAction(action)
+            self.present(alert, animated: true, completion: nil)
         }
     
         outletsArray.forEach { outletView in
@@ -191,6 +214,3 @@ class FirstStageViewController: UIViewController {
         
     }
 }
-
-
-
