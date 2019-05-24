@@ -10,6 +10,7 @@ import UIKit
 
 class FirstStageViewController: UIViewController {
     
+    // MARK:- Init Property
     let colors = [
         "AppBlue",
         "AppGreen",
@@ -40,8 +41,19 @@ class FirstStageViewController: UIViewController {
     var correctColorSequences: [UIColor] = []
     var colorTapped: [UIColor] = []
     var correctAnswer: [Bool] = []
+    var outletsArray: [UIView] {
+        return [choiceOne, choiceTwo, choiceThree, choiceFour, choiceFive]
+    }
+    var shapesViewArray: [UIImageView] {
+        return [shapeOne, shapeTwo, shapeThree, shapeFour, shapeFive]
+    }
     
-    /// MARK - Outlets
+    var timer: Timer?
+    var gameTime = 10
+    var timerIsRunning = false
+    var score = 0
+    
+    // MARK:- Outlets
     @IBOutlet weak var shapeOne: UIImageView!
     @IBOutlet weak var shapeTwo: UIImageView!
     @IBOutlet weak var shapeThree: UIImageView!
@@ -54,13 +66,12 @@ class FirstStageViewController: UIViewController {
     @IBOutlet weak var choiceThree: UIView!
     @IBOutlet weak var choiceFour: UIView!
     @IBOutlet weak var choiceFive: UIView!
-
-    
-    var outletsArray: [UIView] {
-        return [choiceOne, choiceTwo, choiceThree, choiceFour, choiceFive]
-    }
-    var shapesViewArray: [UIImageView] {
-        return [shapeOne, shapeTwo, shapeThree, shapeFour, shapeFive]
+    @IBOutlet weak var countdownProgressView: UIProgressView! {
+        didSet {
+            countdownProgressView.transform = CGAffineTransform(scaleX: 1, y: 1.1)
+            countdownProgressView.tintColor = UIColor(named: "AppYellow")
+            countdownProgressView.layer.cornerRadius = 10
+            countdownProgressView.clipsToBounds = true        }
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -72,9 +83,7 @@ class FirstStageViewController: UIViewController {
         let colorArray = generateRandomColors()
         let colorArrayShuffled = colorArray.shuffled()
         let shapeArray = generateShapes()
-        
-        
-        
+
         for (index, outletView) in outletsArray.enumerated() {
             outletView.backgroundColor = colorArray[index]
         }
@@ -86,9 +95,13 @@ class FirstStageViewController: UIViewController {
         }
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        countdownProgressView.progress = 1
+        scoreLabel.text = "\(score)"
+        
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         
         outletsArray.forEach { (choiceOutlet) in
             let gesture = UITapGestureRecognizer(target: self, action: #selector(handleChoiceTap(sender:)))
@@ -97,6 +110,19 @@ class FirstStageViewController: UIViewController {
             choiceOutlet.isUserInteractionEnabled = true
             choiceOutlet.addGestureRecognizer(gesture)
         }
+    }
+    
+    @objc func updateProgressBar() {
+        gameTime -= 1
+        if gameTime == 0 {
+            timer?.invalidate()
+        }
+       
+        let gameTimeConversion: Float = Float(gameTime) / 10
+        if gameTimeConversion < 0.3 {
+            countdownProgressView.tintColor = UIColor(named: "AppRed")
+        }
+        countdownProgressView.progress = Float(gameTimeConversion)
     }
     
     func generateRandomColors() -> Array<UIColor> {
@@ -159,7 +185,7 @@ class FirstStageViewController: UIViewController {
     
         outletsArray.forEach { outletView in
             UIView.animate(withDuration: 0.3, animations: {
-                outletView!.transform = .identity
+                outletView.transform = .identity
             })
         }
         
