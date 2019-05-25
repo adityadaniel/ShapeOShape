@@ -10,15 +10,11 @@ import UIKit
 
 class StartViewController: UIViewController {
 
-    @IBAction func startButtonTapped(_ sender: Any) {
-    
+    @IBAction func startLabelTapped(_ sender: Any) {
     }
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
     }
 
 }

@@ -32,7 +32,15 @@ class TutorialViewController: UIViewController {
     @IBOutlet weak var shapeThree: UIImageView!
     @IBOutlet weak var shapeFour: UIImageView!
     @IBOutlet weak var shapeFive: UIImageView!
-    @IBOutlet weak var scoreLabel: UILabel!
+    @IBOutlet weak var scoreLabel: UILabel! {
+        didSet {
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(handleSkipTutorial))
+            gesture.numberOfTapsRequired = 1
+            
+            scoreLabel.isUserInteractionEnabled = true
+            scoreLabel.addGestureRecognizer(gesture)
+        }
+    }
     @IBOutlet weak var scoreLabelBackground: UIView!
     @IBOutlet weak var choiceOne: UIView!
     @IBOutlet weak var choiceTwo: UIView!
@@ -66,28 +74,37 @@ class TutorialViewController: UIViewController {
             choiceOutletsArray[index].backgroundColor = UIColor(named: colorsReversed[index])
         }
         
+        startTutorialAnimation()
+        
+    }
+    
+    fileprivate func startTutorialAnimation() {
+        
         let shapeToAnimate = shapesViewArray[0]
         let choiceViewToAnimate = choiceOutletsArray[4]
         
         animateTransformScaleUp(withView: shapeToAnimate)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             self.animateTransformScaleDown(withView: choiceViewToAnimate)
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 9) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
             self.animateTransformScaleUp(withView: self.shapesViewArray[1])
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 12) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 9) {
             self.animateTransformScaleDown(withView: self.choiceOutletsArray[3])
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 19) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 12) {
             let alert = UIAlertController(title: "😎", message: "", preferredStyle: .alert)
             let okAction = UIAlertAction(title: "👍🏼", style: .default, handler: { _ in
                 self.performSegue(withIdentifier: "toFirstStageVC", sender: self)
             })
-            let cancelAction = UIAlertAction(title: "🙅🏻‍♂️🙅🏻‍♀️", style: .destructive, handler: nil)
+            let cancelAction = UIAlertAction(title: "🙅🏻‍♂️🙅🏻‍♀️", style: .destructive, handler: { _ in
+                self.startTutorialAnimation()
+            })
             alert.addAction(okAction)
             alert.addAction(cancelAction)
             self.present(alert, animated: true, completion: nil)
@@ -99,8 +116,13 @@ class TutorialViewController: UIViewController {
     }
 
     
+    // MARK:- skip tutorial function
+    @objc func handleSkipTutorial() {
+        self.performSegue(withIdentifier: "toFirstStageVC", sender: nil)
+    }
+    
     func animateTransformScaleUp(withView: UIView) {
-        UIView.animateKeyframes(withDuration: 4, delay: 0, options: .calculationModeLinear, animations: {
+        UIView.animateKeyframes(withDuration: 3, delay: 0, options: .calculationModeLinear, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                 withView.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
             })
@@ -117,7 +139,7 @@ class TutorialViewController: UIViewController {
     }
     
     func animateTransformScaleDown(withView: UIView) {
-        UIView.animateKeyframes(withDuration: 4, delay: 0, options: .calculationModeLinear, animations: {
+        UIView.animateKeyframes(withDuration: 3, delay: 0, options: .calculationModeLinear, animations: {
             UIView.addKeyframe(withRelativeStartTime: 0.0, relativeDuration: 0.25, animations: {
                 withView.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
             })

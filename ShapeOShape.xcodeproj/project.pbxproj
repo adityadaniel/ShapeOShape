@@ -10,17 +10,23 @@
 		1143B4022296A52A00C09631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1143B4012296A52A00C09631 /* Assets.xcassets */; };
 		11A057D42297B096009F154B /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A057D32297B096009F154B /* StartViewController.swift */; };
 		11A057D62297B190009F154B /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A057D52297B190009F154B /* TutorialViewController.swift */; };
+		11A057D82297DB5F009F154B /* SecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A057D72297DB5F009F154B /* SecondViewController.swift */; };
 		11D2E2222293EE8C00E70284 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D2E2212293EE8C00E70284 /* AppDelegate.swift */; };
 		11D2E2242293EE8C00E70284 /* FirstStageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D2E2232293EE8C00E70284 /* FirstStageViewController.swift */; };
 		11D2E2272293EE8C00E70284 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D2E2252293EE8C00E70284 /* Main.storyboard */; };
 		11D2E22C2293EE8D00E70284 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11D2E22A2293EE8D00E70284 /* LaunchScreen.storyboard */; };
 		11D2E23722968D4D00E70284 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11D2E23622968D4D00E70284 /* Colors.xcassets */; };
+		11D938D8229923FB00D6B42C /* ScoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D938D7229923FB00D6B42C /* ScoreViewController.swift */; };
+		11D938DA2299364500D6B42C /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D938D92299364500D6B42C /* Constant.swift */; };
+		11D938DD2299368F00D6B42C /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D938DC2299368F00D6B42C /* UIColor.swift */; };
+		11D938DF22993DEB00D6B42C /* Array+Differences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11D938DE22993DEB00D6B42C /* Array+Differences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1143B4012296A52A00C09631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11A057D32297B096009F154B /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StartViewController.swift; path = ShapeOShape/StartViewController.swift; sourceTree = SOURCE_ROOT; };
 		11A057D52297B190009F154B /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		11A057D72297DB5F009F154B /* SecondViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondViewController.swift; sourceTree = "<group>"; };
 		11D2E21E2293EE8C00E70284 /* ShapeOShape.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShapeOShape.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11D2E2212293EE8C00E70284 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11D2E2232293EE8C00E70284 /* FirstStageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstStageViewController.swift; sourceTree = "<group>"; };
@@ -28,6 +34,10 @@
 		11D2E22B2293EE8D00E70284 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		11D2E22D2293EE8D00E70284 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11D2E23622968D4D00E70284 /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
+		11D938D7229923FB00D6B42C /* ScoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreViewController.swift; sourceTree = "<group>"; };
+		11D938D92299364500D6B42C /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
+		11D938DC2299368F00D6B42C /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		11D938DE22993DEB00D6B42C /* Array+Differences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Differences.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,9 +70,12 @@
 		11D2E2202293EE8C00E70284 /* ShapeOShape */ = {
 			isa = PBXGroup;
 			children = (
+				11D938DB2299368400D6B42C /* Extensions+Helpers */,
 				11A057D32297B096009F154B /* StartViewController.swift */,
 				11A057D52297B190009F154B /* TutorialViewController.swift */,
 				11D2E2232293EE8C00E70284 /* FirstStageViewController.swift */,
+				11A057D72297DB5F009F154B /* SecondViewController.swift */,
+				11D938D7229923FB00D6B42C /* ScoreViewController.swift */,
 				11D2E2212293EE8C00E70284 /* AppDelegate.swift */,
 				11D2E2252293EE8C00E70284 /* Main.storyboard */,
 				11D2E22A2293EE8D00E70284 /* LaunchScreen.storyboard */,
@@ -71,6 +84,16 @@
 				1143B4012296A52A00C09631 /* Assets.xcassets */,
 			);
 			path = ShapeOShape;
+			sourceTree = "<group>";
+		};
+		11D938DB2299368400D6B42C /* Extensions+Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				11D938D92299364500D6B42C /* Constant.swift */,
+				11D938DC2299368F00D6B42C /* UIColor.swift */,
+				11D938DE22993DEB00D6B42C /* Array+Differences.swift */,
+			);
+			path = "Extensions+Helpers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,10 +168,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11D938DA2299364500D6B42C /* Constant.swift in Sources */,
 				11D2E2242293EE8C00E70284 /* FirstStageViewController.swift in Sources */,
 				11A057D42297B096009F154B /* StartViewController.swift in Sources */,
 				11A057D62297B190009F154B /* TutorialViewController.swift in Sources */,
+				11A057D82297DB5F009F154B /* SecondViewController.swift in Sources */,
+				11D938DD2299368F00D6B42C /* UIColor.swift in Sources */,
 				11D2E2222293EE8C00E70284 /* AppDelegate.swift in Sources */,
+				11D938D8229923FB00D6B42C /* ScoreViewController.swift in Sources */,
+				11D938DF22993DEB00D6B42C /* Array+Differences.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

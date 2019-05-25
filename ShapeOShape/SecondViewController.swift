@@ -1,23 +1,23 @@
 //
-//  ViewController.swift
+//  SecondViewController.swift
 //  ShapeOShape
 //
-//  Created by Daniel Aditya Istyana on 21/05/19.
+//  Created by Daniel Aditya Istyana on 24/05/19.
 //  Copyright © 2019 Daniel Aditya Istyana. All rights reserved.
 //
 
 import UIKit
 
-class FirstStageViewController: UIViewController {
+class SecondViewController: UIViewController {
     
     // MARK:- Init Property
-    let colors: [UIColor] = [
-        Colors.appBlue,
-        Colors.appGreen,
-        Colors.appOrange,
-        Colors.appPurple,
-        Colors.appRed,
-        Colors.appYellow,
+    let colors = [
+        "AppBlue",
+        "AppGreen",
+        "AppOrange",
+        "AppPurple",
+        "AppRed",
+        "AppYellow"
     ]
     
     let shapes = [
@@ -39,21 +39,19 @@ class FirstStageViewController: UIViewController {
     ]
     
     var correctColorSequences: [UIColor] = []
-    var colorTappedArray: [UIColor] = []
-    var answerArray: [Bool] = []
+    var colorTapped: [UIColor] = []
+    var correctAnswer: [Bool] = []
     var outletsArray: [UIView] {
         return [choiceOne, choiceTwo, choiceThree, choiceFour, choiceFive]
     }
     var shapesViewArray: [UIImageView] {
         return [shapeOne, shapeTwo, shapeThree, shapeFour, shapeFive]
     }
+    
     var timer: Timer?
     var gameTime = 7
-    var cumulativeScore: Int = 0
     var timerIsRunning = false
-    var firstStageGamePlayed = 0
-    var maximumFirstStageGamePlayed = 3
-    var choiceTagArray: [Int] = []
+    var score = 0
     
     // MARK:- Outlets
     @IBOutlet weak var shapeOne: UIImageView!
@@ -71,18 +69,17 @@ class FirstStageViewController: UIViewController {
     @IBOutlet weak var countdownProgressView: UIProgressView! {
         didSet {
             countdownProgressView.transform = CGAffineTransform(scaleX: 1, y: 1.1)
-            countdownProgressView.tintColor = Colors.appYellow
+            countdownProgressView.tintColor = UIColor(named: "AppYellow")
             countdownProgressView.layer.cornerRadius = 10
-            countdownProgressView.clipsToBounds = true
-        }
+            countdownProgressView.clipsToBounds = true        }
     }
     
-    // MARK:- Status bar style
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         let colorArray = generateRandomColors()
         let colorArrayShuffled = colorArray.shuffled()
         let shapeArray = generateShapes()
@@ -102,7 +99,7 @@ class FirstStageViewController: UIViewController {
         super.viewDidLoad()
         
         countdownProgressView.progress = 1
-        scoreLabel.text = "\(cumulativeScore)"
+        scoreLabel.text = "\(score)"
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         
@@ -115,26 +112,10 @@ class FirstStageViewController: UIViewController {
         }
     }
     
-    // MARK:- Prepare for segue to second view controller
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "showSecondViewController" {
-            if let destinationVC = segue.destination as? SecondViewController {
-                destinationVC.score = cumulativeScore
-            }
-        } else if segue.identifier == "showScore" {
-            if let destinationVC = segue.destination as? ScoreViewController {
-                destinationVC.score = cumulativeScore
-            }
-        }
-    }
-    
-    
-    // MARK:- Update Progress bar
     @objc func updateProgressBar() {
         gameTime -= 1
         if gameTime == 0 {
             timer?.invalidate()
-//            self.performSegue(withIdentifier: "showScore", sender: nil)
         }
         
         let gameTimeConversion: Float = Float(gameTime) / 10
@@ -148,7 +129,7 @@ class FirstStageViewController: UIViewController {
         var randomColorsArray: Set<UIColor> = []
         while randomColorsArray.count < 5 {
             let colorIndex = Int.random(in: 0..<colors.count)
-            randomColorsArray.insert(colors[colorIndex])
+            randomColorsArray.insert(UIColor(named: colors[colorIndex]) ?? .blue)
         }
         return Array(randomColorsArray)
     }
@@ -165,81 +146,71 @@ class FirstStageViewController: UIViewController {
     @objc func handleChoiceTap(sender: UITapGestureRecognizer) {
         
         guard let choiceView = sender.view else { return }
-        let viewTag = choiceView.tag
         
-        
-        // animate tapped
         UIView.animate(withDuration: 0.3) {
             choiceView.transform = CGAffineTransform(scaleX: 0.9, y: 0.95)
         }
         
         guard let choiceViewBackgroundColor = choiceView.backgroundColor else { return }
-        
-        colorTappedArray.append(choiceViewBackgroundColor)
-        choiceTagArray.append(viewTag)
-        
-        if choiceTagArray.count == 5 && choiceTagArray.difference(from: [1,2,3,4,5]) == []  {
-            print("all choice is tapped")
+        colorTapped.append(choiceViewBackgroundColor)
+        if colorTapped.count == 5 {
             evaluate()
         }
+        
+        
     }
     
-    // MARK:- Reset shape and color
     func resetScreen() {
         let colorArray = generateRandomColors()
+        let shapeArray = generateShapes()
         let colorArrayShuffled = colorArray.shuffled()
         
-        let shapeArray = generateShapes()
+        for (index, outletView) in outletsArray.enumerated() {
+            outletView.backgroundColor = colorArray[index]
+        }
         
         for (index, shapeImageView) in shapesViewArray.enumerated() {
             shapeImageView.image = UIImage(named: shapeArray[index])
-            shapeImageView.tintColor = colorArray[index]
-            correctColorSequences.append(colorArray[index])
+            shapeImageView.tintColor = colorArrayShuffled[index]
+            correctColorSequences.append(colorArrayShuffled[index])
         }
-
-        // set choiceOutletView background color
-        for (index, outletView) in outletsArray.enumerated() {
-            outletView.backgroundColor = colorArrayShuffled[index]
-            UIView.animate(withDuration: 0.5) {
-                outletView.transform = .identity
-            }
-        }
+        
+        gameTime += 5
+        updateProgressBar()
     }
     
-    // MARK:- evaluate games after all choice is selected
     func evaluate() {
-        for (index, color) in colorTappedArray.enumerated() {
-            if color == correctColorSequences[index] {
-                answerArray.append(true)
+        for (index, _) in colorTapped.enumerated() {
+            if colorTapped[index] == correctColorSequences[index] {
+                correctAnswer.append(true)
             } else {
-                answerArray.append(false)
+                correctAnswer.append(false)
             }
         }
         
-        let colorMismatchCount = answerArray.filter{ $0 == false }.count
-        
-        print(colorMismatchCount)
-        print("Color missed:", colorMismatchCount)
-        
-        // reset all array
-        (colorTappedArray, correctColorSequences, choiceTagArray, answerArray) = ([], [], [], [])
-        
-        // updateScore
-        if colorMismatchCount == 0 {
-            cumulativeScore += 5
-            firstStageGamePlayed += 1
-            if firstStageGamePlayed == 4 {
-                performSegue(withIdentifier: "showSecondViewController", sender: nil)
-            }
+        let correctAnswerCount = correctAnswer.filter{ $0 == true}.count
+        if correctAnswerCount == 5 {
+            correctAnswer = []
+            colorTapped = []
+            score += 5
+            print("Success")
+            resetScreen()
         } else {
-            cumulativeScore += colorMismatchCount
-            performSegue(withIdentifier: "showScore", sender: nil)
+            correctAnswer = []
+            colorTapped = []
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "FirstStageViewController")
+            self.present(vc, animated: true, completion: nil)
         }
         
-        // update scorelabel
-        scoreLabel.text = "\(cumulativeScore)"
-        
-        resetScreen()
+        outletsArray.forEach { outletView in
+            UIView.animate(withDuration: 0.3, animations: {
+                outletView.transform = .identity
+            })
+        }
         
     }
+    
+
+
 }
