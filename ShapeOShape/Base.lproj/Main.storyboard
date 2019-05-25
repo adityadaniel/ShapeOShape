@@ -21,6 +21,7 @@
                         <subviews>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="bRH-jb-oZ5">
                                 <rect key="frame" x="12" y="84" width="390" height="10"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="ABl-St-qt7"/>
                                 </constraints>
@@ -50,7 +51,7 @@
                             </stackView>
                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="qtP-UT-bwX">
                                 <rect key="frame" x="0.0" y="388" width="414" height="120"/>
-                                <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9fS-5H-orA">
                                 <rect key="frame" x="173" y="416" width="68.5" height="64.5"/>
@@ -113,6 +114,7 @@
                         <outlet property="choiceFive" destination="jcp-Dd-DBr" id="jMh-jd-KbB"/>
                         <outlet property="choiceFour" destination="3q4-Y4-Bni" id="dxK-4m-ZZO"/>
                         <outlet property="choiceOne" destination="ZkU-V2-qdm" id="KJd-B3-Fz7"/>
+                        <outlet property="choiceStackView" destination="8GH-zW-KpR" id="SF4-h4-awv"/>
                         <outlet property="choiceThree" destination="8gy-NX-QCm" id="HhE-Ao-Xay"/>
                         <outlet property="choiceTwo" destination="5uw-wk-d0D" id="gO6-Bb-4cA"/>
                         <outlet property="countdownProgressView" destination="bRH-jb-oZ5" id="I8j-fB-PyL"/>
@@ -173,6 +175,7 @@
                         <subviews>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="fRq-tz-7J6">
                                 <rect key="frame" x="12" y="84" width="390" height="10"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="10" id="QZ7-fE-Skq"/>
                                 </constraints>
@@ -453,6 +456,6 @@
         </namedColor>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="CIb-H9-7gE"/>
+        <segue reference="b4C-xW-na8"/>
     </inferredMetricsTieBreakers>
 </document>

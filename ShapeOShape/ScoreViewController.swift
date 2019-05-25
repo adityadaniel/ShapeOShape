@@ -7,12 +7,17 @@
 //
 
 import UIKit
+import AudioToolbox
+
 
 class ScoreViewController: UIViewController {
 
     @IBOutlet weak var scoreLabel: UILabel! {
         didSet {
             let gesture = UITapGestureRecognizer(target: self, action: #selector(restartGame))
+            gesture.numberOfTapsRequired = 1
+            
+            scoreLabel.isUserInteractionEnabled = true
             scoreLabel.addGestureRecognizer(gesture)
             
         }
@@ -22,13 +27,18 @@ class ScoreViewController: UIViewController {
     
     @objc func restartGame() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        storyboard.instantiateViewController(withIdentifier: "<#T##String#>")
+        let vc = storyboard.instantiateViewController(withIdentifier: "FirstStageViewController") as! FirstStageViewController
+        
+        self.present(vc, animated: true, completion: nil)
+        
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         scoreLabel.text = "\(score)"
+        
+        AudioServicesPlayAlertSound(1304)
     }
 
 

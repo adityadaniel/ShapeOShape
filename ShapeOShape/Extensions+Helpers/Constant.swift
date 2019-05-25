@@ -14,5 +14,5 @@ struct Colors {
     static let appPurple = UIColor(r: 152, g: 62, b: 152, a: 1)
     static let appRed = UIColor(r: 226, g: 59, b: 63, a: 1)
     static let appYellow = UIColor(r: 246, g: 179, b: 41, a: 1)
-    
+    static let appLightGray = UIColor(r: 153, g: 153, b: 153, a: 1)
 }

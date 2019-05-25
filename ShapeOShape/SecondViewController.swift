@@ -11,13 +11,13 @@ import UIKit
 class SecondViewController: UIViewController {
     
     // MARK:- Init Property
-    let colors = [
-        "AppBlue",
-        "AppGreen",
-        "AppOrange",
-        "AppPurple",
-        "AppRed",
-        "AppYellow"
+    let colors: [UIColor] = [
+        Colors.appBlue,
+        Colors.appGreen,
+        Colors.appOrange,
+        Colors.appPurple,
+        Colors.appRed,
+        Colors.appYellow,
     ]
     
     let shapes = [
@@ -30,7 +30,6 @@ class SecondViewController: UIViewController {
         "Moon",
         "Octagon",
         "Pentagon",
-        "Rect w hole",
         "Rect",
         "Right Triangle",
         "Rounded rect",
@@ -39,8 +38,8 @@ class SecondViewController: UIViewController {
     ]
     
     var correctColorSequences: [UIColor] = []
-    var colorTapped: [UIColor] = []
-    var correctAnswer: [Bool] = []
+    var colorTappedArray: [UIColor] = []
+    var answerArray: [Bool] = []
     var outletsArray: [UIView] {
         return [choiceOne, choiceTwo, choiceThree, choiceFour, choiceFive]
     }
@@ -49,9 +48,12 @@ class SecondViewController: UIViewController {
     }
     
     var timer: Timer?
-    var gameTime = 7
+    var gameTime = 10
+    var cumulativeScore: Int = 0
     var timerIsRunning = false
-    var score = 0
+    var secondStageGamePlayed = 0
+    var maximumFirstStageGamePlayed = 3
+    var choiceTagArray: [Int] = []
     
     // MARK:- Outlets
     @IBOutlet weak var shapeOne: UIImageView!
@@ -79,7 +81,6 @@ class SecondViewController: UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        
         let colorArray = generateRandomColors()
         let colorArrayShuffled = colorArray.shuffled()
         let shapeArray = generateShapes()
@@ -93,13 +94,19 @@ class SecondViewController: UIViewController {
             shapeImageView.tintColor = colorArrayShuffled[index]
             correctColorSequences.append(colorArrayShuffled[index])
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveLinear, animations: {
+                self.scoreLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+            }, completion: nil)
+        }
+        
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         countdownProgressView.progress = 1
-        scoreLabel.text = "\(score)"
+        scoreLabel.text = "\(cumulativeScore)"
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateProgressBar), userInfo: nil, repeats: true)
         
@@ -112,10 +119,21 @@ class SecondViewController: UIViewController {
         }
     }
     
+    // MARK:- Prepare for segue to score
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showScore" {
+            if let destinationVC = segue.destination as? ScoreViewController {
+                destinationVC.score = cumulativeScore
+            }
+        }
+    }
+    
+    // MARK:- Update the progress bar
     @objc func updateProgressBar() {
         gameTime -= 1
         if gameTime == 0 {
             timer?.invalidate()
+            self.performSegue(withIdentifier: "showScore", sender: nil)
         }
         
         let gameTimeConversion: Float = Float(gameTime) / 10
@@ -129,7 +147,7 @@ class SecondViewController: UIViewController {
         var randomColorsArray: Set<UIColor> = []
         while randomColorsArray.count < 5 {
             let colorIndex = Int.random(in: 0..<colors.count)
-            randomColorsArray.insert(UIColor(named: colors[colorIndex]) ?? .blue)
+            randomColorsArray.insert(colors[colorIndex])
         }
         return Array(randomColorsArray)
     }
@@ -146,71 +164,120 @@ class SecondViewController: UIViewController {
     @objc func handleChoiceTap(sender: UITapGestureRecognizer) {
         
         guard let choiceView = sender.view else { return }
+        let viewTag = choiceView.tag
         
+        
+        // animate tapped
         UIView.animate(withDuration: 0.3) {
             choiceView.transform = CGAffineTransform(scaleX: 0.9, y: 0.95)
         }
         
         guard let choiceViewBackgroundColor = choiceView.backgroundColor else { return }
-        colorTapped.append(choiceViewBackgroundColor)
-        if colorTapped.count == 5 {
+        
+        colorTappedArray.append(choiceViewBackgroundColor)
+        choiceTagArray.append(viewTag)
+        
+        if secondStageGamePlayed == 2 && choiceTagArray.count == 4 && choiceTagArray.difference(from: [1,2,4,5]) == [] {
             evaluate()
+        } else {
+            if choiceTagArray.count == 5 && choiceTagArray.difference(from: [1,2,3,4,5]) == []  {
+                evaluate()
+            }
         }
-        
-        
     }
     
-    func resetScreen() {
-        let colorArray = generateRandomColors()
-        let shapeArray = generateShapes()
-        let colorArrayShuffled = colorArray.shuffled()
-        
-        for (index, outletView) in outletsArray.enumerated() {
-            outletView.backgroundColor = colorArray[index]
-        }
-        
-        for (index, shapeImageView) in shapesViewArray.enumerated() {
-            shapeImageView.image = UIImage(named: shapeArray[index])
-            shapeImageView.tintColor = colorArrayShuffled[index]
-            correctColorSequences.append(colorArrayShuffled[index])
-        }
-        
-        gameTime += 5
-        updateProgressBar()
-    }
-    
+    // MARK:- evaluate games after all choice is selected
     func evaluate() {
-        for (index, _) in colorTapped.enumerated() {
-            if colorTapped[index] == correctColorSequences[index] {
-                correctAnswer.append(true)
+        let correctColorSequencesReversed = Array(correctColorSequences.reversed())
+        
+        for (index, color) in colorTappedArray.enumerated() {
+            if color == correctColorSequencesReversed[index] {
+                answerArray.append(true)
             } else {
-                correctAnswer.append(false)
+                answerArray.append(false)
             }
         }
         
-        let correctAnswerCount = correctAnswer.filter{ $0 == true}.count
-        if correctAnswerCount == 5 {
-            correctAnswer = []
-            colorTapped = []
-            score += 5
-            print("Success")
-            resetScreen()
+        let colorMismatchCount = answerArray.filter{ $0 == false }.count
+        
+        // reset all array
+        (colorTappedArray, correctColorSequences, choiceTagArray, answerArray) = ([], [], [], [])
+        
+        // updateScore
+        if colorMismatchCount == 0 {
+            cumulativeScore += 5
+            secondStageGamePlayed += 1
         } else {
-            correctAnswer = []
-            colorTapped = []
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "FirstStageViewController")
-            self.present(vc, animated: true, completion: nil)
+            cumulativeScore += colorMismatchCount
+            performSegue(withIdentifier: "showScore", sender: nil)
         }
         
-        outletsArray.forEach { outletView in
-            UIView.animate(withDuration: 0.3, animations: {
+        // update scorelabel
+        scoreLabel.text = "\(cumulativeScore)"
+        
+        gameTime += gameTime - secondStageGamePlayed
+        
+        if secondStageGamePlayed == 2 {
+            resetScreenToSpecialSurprise()
+        } else {
+            resetScreen()
+        }
+    }
+    
+    @objc func handleBackgroundScoreTap() {
+        print("background color tapped")
+        colorTappedArray.append(Colors.appLightGray)
+    }
+    
+    func resetScreenToSpecialSurprise() {
+        print("Special stage")
+        let shapeColorArray = [Colors.appGreen, Colors.appRed, Colors.appLightGray, Colors.appPurple, Colors.appOrange]
+        let colorArray = [Colors.appGreen, Colors.appRed, Colors.appYellow, Colors.appPurple, Colors.appOrange]
+        let colorArrayReversed = Array(colorArray.reversed())
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(handleBackgroundScoreTap))
+        gesture.numberOfTapsRequired = 1
+        
+        self.scoreLabelBackground.isUserInteractionEnabled = true
+        self.scoreLabelBackground.addGestureRecognizer(gesture)
+        
+        let shapeArray = generateShapes()
+        
+        for (index, shapeImageView) in shapesViewArray.enumerated() {
+                shapeImageView.image = UIImage(named: shapeArray[index])
+                shapeImageView.tintColor = shapeColorArray[index]
+                correctColorSequences.append(shapeColorArray[index])
+        }
+        
+        // set choiceOutletView background color
+        for (index, outletView) in outletsArray.enumerated() {
+            outletView.backgroundColor = colorArrayReversed[index]
+            UIView.animate(withDuration: 0.5) {
                 outletView.transform = .identity
-            })
+            }
         }
         
     }
     
-
-
+    // MARK:- Reset shape, color and timer
+    func resetScreen() {
+        let colorArray = generateRandomColors()
+        let colorArrayShuffled = colorArray.shuffled()
+        
+        let shapeArray = generateShapes()
+        
+        for (index, shapeImageView) in shapesViewArray.enumerated() {
+            shapeImageView.image = UIImage(named: shapeArray[index])
+            shapeImageView.tintColor = colorArray[index]
+            correctColorSequences.append(colorArray[index])
+        }
+        
+        // set choiceOutletView background color
+        for (index, outletView) in outletsArray.enumerated() {
+            outletView.backgroundColor = colorArrayShuffled[index]
+            UIView.animate(withDuration: 0.5) {
+                outletView.transform = .identity
+            }
+        }
+    }
 }
