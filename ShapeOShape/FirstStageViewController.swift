@@ -71,7 +71,7 @@ class FirstStageViewController: UIViewController {
         didSet {
             countdownProgressView.transform = CGAffineTransform(scaleX: 1, y: 1.1)
             countdownProgressView.tintColor = Colors.appYellow
-            countdownProgressView.layer.cornerRadius = 10
+            countdownProgressView.layer.cornerRadius = 5
             countdownProgressView.clipsToBounds = true
         }
     }
