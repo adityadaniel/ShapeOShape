@@ -4,4 +4,4 @@ This repository contains source code of nano challenge 1 project. ShapeOShape is
 
 ## Screenshots
 
-![](https://github.com/adityadaniel/ShapeOShape/blob/master/shape-o-shape.PNG)
+![](https://github.com/adityadaniel/ShapeOShape/blob/master/shape-o-shape2.PNG)
