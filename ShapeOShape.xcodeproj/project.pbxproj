@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		11207323229C153400669102 /* shape-o-shape.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 11207322229C153400669102 /* shape-o-shape.PNG */; };
 		1143B4022296A52A00C09631 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1143B4012296A52A00C09631 /* Assets.xcassets */; };
 		11A057D42297B096009F154B /* StartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A057D32297B096009F154B /* StartViewController.swift */; };
 		11A057D62297B190009F154B /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A057D52297B190009F154B /* TutorialViewController.swift */; };
@@ -23,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		11207321229C140C00669102 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		11207322229C153400669102 /* shape-o-shape.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shape-o-shape.PNG"; sourceTree = "<group>"; };
 		1143B4012296A52A00C09631 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		11A057D32297B096009F154B /* StartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StartViewController.swift; path = ShapeOShape/StartViewController.swift; sourceTree = SOURCE_ROOT; };
 		11A057D52297B190009F154B /* TutorialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +59,8 @@
 			children = (
 				11D2E2202293EE8C00E70284 /* ShapeOShape */,
 				11D2E21F2293EE8C00E70284 /* Products */,
+				11207321229C140C00669102 /* README.md */,
+				11207322229C153400669102 /* shape-o-shape.PNG */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +163,7 @@
 				11D2E23722968D4D00E70284 /* Colors.xcassets in Resources */,
 				1143B4022296A52A00C09631 /* Assets.xcassets in Resources */,
 				11D2E2272293EE8C00E70284 /* Main.storyboard in Resources */,
+				11207323229C153400669102 /* shape-o-shape.PNG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
